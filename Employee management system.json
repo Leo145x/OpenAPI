@@ -10,9 +10,26 @@
             "description": "Development server"
         }
     ],
+    "tags": [
+        {
+            "name": "Employee",
+            "description": "員工相關操作"
+        },
+        {
+            "name": "Department",
+            "description": "部門相關操作"
+        },
+        {
+            "name": "Authentication",
+            "description": "驗證相關操作"
+        }
+    ],
     "paths": {
         "/login": {
             "post": {
+                "tags": [
+                    "Authentication"
+                ],
                 "summary": "管理員登入",
                 "operationId": "adminLogin",
                 "requestBody": {
@@ -28,7 +45,11 @@
                                     "password": {
                                         "type": "string"
                                     }
-                                }
+                                },
+                                "required": [
+                                    "username",
+                                    "password"
+                                ]
                             }
                         }
                     }
@@ -57,6 +78,9 @@
         },
         "/employees": {
             "get": {
+                "tags": [
+                    "Employee"
+                ],
                 "summary": "列出所有員工",
                 "operationId": "listEmployees",
                 "responses": {
@@ -67,7 +91,7 @@
                                 "schema": {
                                     "type": "array",
                                     "items": {
-                                        "$ref": "#/components/schemas/Employee"
+                                        "$ref": "#/components/schemas/EmployeeWithDepartment"
                                     }
                                 }
                             }
@@ -76,6 +100,9 @@
                 }
             },
             "post": {
+                "tags": [
+                    "Employee"
+                ],
                 "summary": "新增員工",
                 "operationId": "createEmployee",
                 "requestBody": {
@@ -103,8 +130,11 @@
                 }
             }
         },
-        "/employee/{id}": {
+        "/employees/{id}": {
             "put": {
+                "tags": [
+                    "Employee"
+                ],
                 "summary": "更新員工",
                 "operationId": "updateEmployee",
                 "parameters": [
@@ -134,6 +164,9 @@
                 }
             },
             "delete": {
+                "tags": [
+                    "Employee"
+                ],
                 "summary": "刪除員工",
                 "operationId": "deleteEmployee",
                 "parameters": [
@@ -155,6 +188,9 @@
         },
         "/departments": {
             "get": {
+                "tags": [
+                    "Department"
+                ],
                 "summary": "列出所有部門",
                 "operationId": "listDepartments",
                 "responses": {
@@ -174,6 +210,9 @@
                 }
             },
             "post": {
+                "tags": [
+                    "Department"
+                ],
                 "summary": "新增部門資料",
                 "operationId": "createDepartment",
                 "requestBody": {
@@ -195,6 +234,9 @@
         },
         "/departments/{id}": {
             "put": {
+                "tags": [
+                    "Department"
+                ],
                 "summary": "更新部門資料",
                 "operationId": "updateDepartment",
                 "parameters": [
@@ -224,6 +266,9 @@
                 }
             },
             "delete": {
+                "tags": [
+                    "Department"
+                ],
                 "summary": "刪除部門資料",
                 "operationId": "deleteDepartment",
                 "parameters": [
@@ -250,7 +295,7 @@
                 "type": "object",
                 "properties": {
                     "employee_id": {
-                        "type": "string"
+                        "type": "integer"
                     },
                     "name": {
                         "type": "string"
@@ -273,7 +318,7 @@
                 },
                 "required": [
                     "name",
-                    "counrty",
+                    "country",
                     "age",
                     "salary",
                     "department_id"
@@ -298,6 +343,24 @@
                 "required": [
                     "department_name",
                     "location"
+                ]
+            },
+            "EmployeeWithDepartment": {
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/Employee"
+                    },
+                    {
+                        "type": "object",
+                        "properties": {
+                            "department": {
+                                "$ref": "#/components/schemas/Department"
+                            }
+                        },
+                        "required": [
+                            "department"
+                        ]
+                    }
                 ]
             }
         }
